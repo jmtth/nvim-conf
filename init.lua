@@ -3,7 +3,6 @@ require("config.keymaps")
 require("config.options")
 require("module.togglelsp")
 require("module.toggle-clangtidy")
-require("module.toggle-gotopreview")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "c", "cpp", "h", "hpp", "cc", "cxx", "tpp" },
 	callback = function()

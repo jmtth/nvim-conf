@@ -1,11 +1,11 @@
-vim.opt.colorcolumn = '80'
+vim.opt.colorcolumn = "80"
 vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.cursorline = true --show line undercursor
 vim.opt.undofile = true --store undos between sessions
 vim.g.have_nerd_font = true
-vim.opt.mouse = 'a' --Enable mouse mode, can be useful for resizing splits for example!
+vim.opt.mouse = "a" --Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.showmode = false --Don't show the mode , since it's already in the stqtus line
 
 vim.opt.expandtab = true --Convert tabs to spaces
@@ -31,7 +31,7 @@ vim.opt.splitbelow = true
 -- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = "split"
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -39,7 +39,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-
+-- Configuration des fenêtres flottantes
+vim.opt.pumheight = 15 -- Limite la hauteur du menu popup
+vim.opt.pumwidth = 60 -- Limite la largeur du menu popup
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -47,23 +49,23 @@ vim.opt.scrolloff = 10
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
 })
 
 -- nvim/after/ftdetect/cpp.lua
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = vim.api.nvim_create_augroup("CustomCppDetection", {}),
-  desc = "Set .ttp files to C++",
-  callback = function(ev)
-    if vim.fn.expand("%"):sub(-4) == ".tpp" then
-      vim.api.nvim_set_option_value("filetype", "cpp", { buf = ev.buf })
-    end
-  end,
+	group = vim.api.nvim_create_augroup("CustomCppDetection", {}),
+	desc = "Set .ttp files to C++",
+	callback = function(ev)
+		if vim.fn.expand("%"):sub(-4) == ".tpp" then
+			vim.api.nvim_set_option_value("filetype", "cpp", { buf = ev.buf })
+		end
+	end,
 })
 
 -- vim.api.nvim_create_autocmd("BufWritePre", {
