@@ -3,6 +3,8 @@ require("config.keymaps")
 require("config.options")
 require("module.togglelsp")
 require("module.toggle-clangtidy")
+require("module.toggle-fold-comments")
+require("module.toggle-fold-methods")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "c", "cpp", "h", "hpp", "cc", "cxx", "tpp" },
 	callback = function()
