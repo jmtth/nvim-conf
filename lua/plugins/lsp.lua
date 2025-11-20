@@ -262,6 +262,14 @@ return {
 			-- But for many setups, the LSP (`ts_ls`) will work just fine
 			-- ts_ls = {},
 			--
+			ts_ls = {
+				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+				settings = {
+					typescript = {
+						format = { enable = false }, -- formatting géré par conform
+					},
+				},
+			},
 
 			lua_ls = {
 				-- cmd = { ... },

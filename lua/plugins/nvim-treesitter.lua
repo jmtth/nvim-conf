@@ -24,6 +24,8 @@ return {
 				"elixir",
 				"heex",
 				"javascript",
+				"typescript",
+				"tsx",
 				"html",
 				"cpp",
 				"python",
