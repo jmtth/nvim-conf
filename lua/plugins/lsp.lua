@@ -71,12 +71,12 @@ return {
 
 				-- Jump to the implementation of the word under your cursor.
 				--  Useful when your language has ways of declaring types without an actual implementation.
-				map("gri", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementation")
+				map("gri", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
 
 				-- Jump to the definition of the word under your cursor.
 				--  This is where a variable was first declared, or where a function is defined, etc.
 				--  To jump back, press <C-t>.
-				map("grd", require("fzf-lua").lsp_definitions, "[G]oto [D]efinition")
+				map("grd", vim.lsp.buf.definition, "[G]oto [D]efinition")
 
 				-- WARN: This is not Goto Definition, this is Goto Declaration.
 				--  For example, in C this would take you to the header.
@@ -194,7 +194,7 @@ return {
 		--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 		local original_capabilities = vim.lsp.protocol.make_client_capabilities()
 		-- local capabilities = require('blink.cmp').get_lsp_capabilities(original_capabilities)
-		local capabilities = require('cmp_nvim_lsp').default_capabilities()
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 		-- Enable the following language servers
 		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 		--
@@ -229,12 +229,23 @@ return {
 					"--background-index",
 					"--background-index-priority=low",
 					"--log=verbose",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=never",
+					"--all-scopes-completion",
+					"--completion-style=detailed",
+					"--cross-file-rename",
+					"--pch-storage=memory",
 				},
 				-- Permettre à clangd de chercher automatiquement les fichiers .clangd
 				root_dir = function(fname)
-					return require('lspconfig.util').root_pattern('.clangd', '.clang-tidy', 'compile_commands.json', 'CMakeLists.txt', 'Makefile')(fname)
-						or require('lspconfig.util').find_git_ancestor(fname)
-						or vim.fn.getcwd()
+					return require("lspconfig.util").root_pattern(
+						".clangd",
+						".clang-tidy",
+						"compile_commands.json",
+						"CMakeLists.txt",
+						"Makefile"
+					)(fname) or require("lspconfig.util").find_git_ancestor(fname) or vim.fn.getcwd()
 				end,
 			},
 			--clangd = {},
@@ -259,9 +270,9 @@ return {
 				settings = {
 					Lua = {
 						completion = {
-							callSnippet = 'Replace',
+							callSnippet = "Replace",
 						},
-						diagnostic = {globales = { 'vim'}}
+						diagnostic = { globales = { "vim" } },
 						-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 						-- diagnostics = { disable = { 'missing-fields' } },
 					},
@@ -300,14 +311,13 @@ return {
 					-- by the server configuration above. Useful when disabling
 					-- certain features of an LSP (for example, turning off formatting for ts_ls)
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					
+
 					-- Use the standard lspconfig setup instead of new API (causes blocking)
-					require('lspconfig')[server_name].setup(server)
+					require("lspconfig")[server_name].setup(server)
 				end,
 			},
 		})
 		-- Configuration pour clangd déjà gérée dans servers.clangd ci-dessus
 		-- (la config vim.lsp.config causait des blocages)
-
 	end,
 }

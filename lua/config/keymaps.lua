@@ -23,4 +23,35 @@ vim.keymap.set("n", "<leader>gv2", "<cmd>:DiffviewOpen HEAD~2<CR>", { desc = "Di
 vim.keymap.set("n", "<leader>gv3", "<cmd>:DiffviewOpen HEAD~3<CR>", { desc = "Diffview Head~3" })
 vim.keymap.set("n", "<leader>gh", "<cmd>:DiffviewFileHistory %<CR>", { desc = "DiffviewiHistory current file" })
 vim.keymap.set("n", "<leader>gc", "<cmd>:DiffviewClose<CR>", { desc = "Diffview Close" })
-vim.keymap.set("n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
+-- vim.keymap.set("n", "gp", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
+-- Définition (header .hpp)
+vim.keymap.set(
+	"n",
+	"gpd",
+	"<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+	{ noremap = true, desc = "Go to definition preview (header)" }
+)
+
+-- Implémentation (source .cpp)
+-- Dans keymaps.lua
+vim.keymap.set("n", "gpi", function()
+	local current_file = vim.fn.expand("%:p")
+
+	-- Si on est dans un header, essayer d'aller vers le .cpp correspondant
+	if current_file:match("%.hpp$") or current_file:match("%.h$") then
+		local source_file = current_file:gsub("%.hpp$", ".cpp"):gsub("%.h$", ".c")
+
+		-- D'abord essayer avec l'implémentation LSP
+		vim.lsp.buf_request(0, "textDocument/implementation", vim.lsp.util.make_position_params(), function(err, result)
+			if result and #result > 0 then
+				require("goto-preview").goto_preview_definition(result[1])
+			else
+				-- Fallback: utiliser la définition normale
+				require("goto-preview").goto_preview_definition()
+			end
+		end)
+	else
+		-- Si on est déjà dans un .cpp, utiliser la définition normale
+		require("goto-preview").goto_preview_definition()
+	end
+end, { noremap = true, desc = "Go to implementation preview" })

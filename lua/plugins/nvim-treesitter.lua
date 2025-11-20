@@ -42,6 +42,7 @@ return {
 				},
 			},
 		})
+		vim.treesitter.language.register("html", "ejs")
 	end,
 	"nvim-treesitter/playground",
 	cmd = "TSPlaygroundToggle",
