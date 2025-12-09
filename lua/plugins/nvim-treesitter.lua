@@ -28,6 +28,7 @@ return {
 				"cpp",
 				"python",
 				"bash",
+				"solidity",
 			},
 			sync_install = false,
 			highlight = { enable = true },
