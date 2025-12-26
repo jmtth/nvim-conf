@@ -1,6 +1,9 @@
 return {
 	"stevearc/conform.nvim",
-	opts = function()
+	event = { "BufReadPre", "BufNewFile" },
+	config = function()
+		local conform = require("conform")
+
 		local os_name = vim.loop.os_uname().sysname
 		local clang_format_command
 
@@ -9,13 +12,19 @@ return {
 		else
 			clang_format_command = "/opt/homebrew/opt/llvm/bin/clang-format"
 		end
-		return {
+
+		conform.setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				rust = { "rustfmt", lsp_format = "fallback" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				html = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				-- Pour tes projets Solidity (vu ton profil)
+				solidity = { "forge_fmt" },
 				-- Support EJS
 				ejs = { "prettierd", "prettier", stop_after_first = true },
 
@@ -46,6 +55,6 @@ return {
 				timeout_ms = 500,
 				lsp_format = "fallback",
 			},
-		}
+		})
 	end,
 }
