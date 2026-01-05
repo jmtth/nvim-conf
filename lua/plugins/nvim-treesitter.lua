@@ -35,7 +35,7 @@ return {
 					"cpp",
 					"python",
 					"bash",
-					"solidity",
+					-- "solidity",
 				},
 				sync_install = false, -- NE PAS installer de façon synchrone au démarrage
 				auto_install = false, -- Désactive l'installation auto pour éviter les blocages

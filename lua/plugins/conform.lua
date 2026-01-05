@@ -24,7 +24,7 @@ return {
 				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 				-- Pour tes projets Solidity (vu ton profil)
-				solidity = { "forge_fmt" },
+				-- solidity = { "forge_fmt" },
 				-- Support EJS
 				ejs = { "prettierd", "prettier", stop_after_first = true },
 

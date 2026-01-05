@@ -20,3 +20,11 @@ vim.filetype.add({
 		ejs = "html",
 	},
 })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "solidity",
+	callback = function()
+		vim.b.did_ftplugin = true
+		vim.opt_local.makeprg = ""
+		vim.opt_local.errorformat = ""
+	end,
+})

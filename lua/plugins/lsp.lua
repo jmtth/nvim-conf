@@ -173,7 +173,17 @@ return {
 			-- 	end,
 			-- },
 
-			solidity = {},
+			solidity = {
+				filetypes = { "solidity" },
+				cmd = { "solidity-language-server", "--stdio" },
+				root_dir = util.root_pattern("foundry.toml", ".git"),
+				settings = {
+					solidity = {
+						defaultCompiler = "forge",
+						compileUsingRemoteVersion = "none",
+					},
+				},
+			},
 
 			pyright = {},
 
@@ -193,6 +203,9 @@ return {
 			"prettierd",
 			"clangd",
 		})
+		ensure_installed = vim.tbl_filter(function(name)
+			return name ~= "solidity"
+		end, ensure_installed)
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		require("mason-lspconfig").setup({
@@ -200,6 +213,9 @@ return {
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
+					-- if server_name == "solidity" then
+					-- 	return -- ⚠️ BLOQUAGE TOTAL
+					-- end
 					-- On récupère la config spécifique ou une table vide
 					local server_opts = servers[server_name] or {}
 
