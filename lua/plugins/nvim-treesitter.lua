@@ -13,59 +13,29 @@ return {
 		},
 	},
 	config = function()
-		local configs = require("nvim-treesitter.configs")
-		configs.setup({
-			ensure_installed = {
-				"c",
-				"lua",
-				"vim",
-				"vimdoc",
-				"query",
-				"elixir",
-				"heex",
-				"javascript",
-				"typescript",
-				"tsx",
-				"html",
-				"cpp",
-				"python",
-				"bash",
-				"solidity",
-			},
-			sync_install = false,
-			highlight = { enable = true },
-			indent = { enable = true },
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<Enter>",
-					node_incremental = "<Enter>",
-					scope_incremental = false,
-					node_decremental = "<Backspace>",
-		--merge conflict
-		-- local install = require("nvim-treesitter.install")
-		-- install.prefer_git = true
-		-- -- Force l'utilisation de cc (souvent clang à 42)
-		-- require("nvim-treesitter.install").prefer_git = true
-		-- require("nvim-treesitter.install").compilers = { "cc", "clang", "gcc" }
-		-- -- Utilisation de pcall pour éviter un crash si le module est absent
-		-- local status, configs = pcall(require, "nvim-treesitter.configs")
-		--
-		-- -- Si le module existe (ancienne version ou compatibilité)
-		-- if status then
-		-- 	configs.setup({
-		-- 		ensure_installed = {
-		-- 			"c",
-		-- 			-- "lua",
-		-- 			"vim",
-		-- 			"vimdoc",
-		-- 			"query",
-		-- 			"javascript",
-		-- 			"html",
-		-- 			"cpp",
-		-- 			"python",
-		-- 			"bash",
-		-- 			-- "solidity",
+		local install = require("nvim-treesitter.install")
+		install.prefer_git = true
+		-- Force l'utilisation de cc (souvent clang à 42)
+		require("nvim-treesitter.install").prefer_git = true
+		require("nvim-treesitter.install").compilers = { "cc", "clang", "gcc" }
+		-- Utilisation de pcall pour éviter un crash si le module est absent
+		local status, configs = pcall(require, "nvim-treesitter.configs")
+
+		-- Si le module existe (ancienne version ou compatibilité)
+		if status then
+			configs.setup({
+				ensure_installed = {
+					"c",
+					-- "lua",
+					"vim",
+					"vimdoc",
+					"query",
+					"javascript",
+					"html",
+					"cpp",
+					"python",
+					"bash",
+					-- "solidity",
 				},
 				sync_install = false, -- NE PAS installer de façon synchrone au démarrage
 				auto_install = false, -- Désactive l'installation auto pour éviter les blocages

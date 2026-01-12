@@ -27,6 +27,7 @@ return {
 				-- solidity = { "forge_fmt" },
 				-- Support EJS
 				ejs = { "prettierd", "prettier", stop_after_first = true },
+				solidity = { "prettier", "prettierd", stop_after_first = true },
 
 				-- Tous les filetypes C/C++
 				c = { "clang-format" },
@@ -45,6 +46,14 @@ return {
 						"--assume-filename=$FILENAME", -- Important pour la détection du langage
 					},
 					stdin = true,
+				},
+				prettier = {
+					prepend_args = function(self, ctx)
+						if vim.bo[ctx.buf].filetype == "solidity" then
+							return { "--plugin", "prettier-plugin-solidity" }
+						end
+						return {}
+					end,
 				},
 			},
 			default_format_opts = {
