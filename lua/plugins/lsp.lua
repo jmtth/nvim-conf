@@ -180,14 +180,14 @@ return {
 			-- But for many setups, the LSP (`ts_ls`) will work just fine
 			-- ts_ls = {},
 			--
-			ts_ls = {
-				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-				settings = {
-					typescript = {
-						format = { enable = false }, -- formatting géré par conform
-					},
-				},
-			},
+			-- ts_ls = {
+			-- 	filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+			-- 	settings = {
+			-- 		typescript = {
+			-- 			format = { enable = false }, -- formatting géré par conform
+			-- 		},
+			-- 	},
+			-- },
 			-- ts_ls = {
 			-- 	root_dir = function(fname)
 			-- 		return util.root_pattern("package.json", "tsconfig.json", ".git")(fname)
@@ -234,6 +234,9 @@ return {
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
+					if server_name == "ts_ls" then
+						return -- ⛔ BLOQUAGE TOTAL
+					end
 					-- if server_name == "solidity" then
 					-- 	return -- ⚠️ BLOQUAGE TOTAL
 					-- end

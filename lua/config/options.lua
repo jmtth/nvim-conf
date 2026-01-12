@@ -75,3 +75,65 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 --         vim.cmd("silent! !clang-format -style=file -i " .. vim.fn.expand("%"))
 --     end,
 -- })
+
+-- Hotfix nvim 0.12-dev: vim.fs.joinpath() ne tolère pas les tables
+-- Certaines chaînes d'appel (vim.fs.find/root + lspconfig ts_ls) peuvent injecter {path, marker}
+do
+	local _root = vim.fs.root
+	local _joinpath = vim.fs.joinpath
+
+	local function to_path(v)
+		if type(v) == "string" then
+			return v
+		end
+		if type(v) == "table" then
+			-- cas le plus fréquent: { "/path", "marker" }
+			if type(v[1]) == "string" then
+				return v[1]
+			end
+			-- fallback possibles
+			if type(v.path) == "string" then
+				return v.path
+			end
+		end
+		return tostring(v)
+	end
+
+	vim.fs.joinpath = function(...)
+		local parts = { ... }
+		for i = 1, #parts do
+			parts[i] = to_path(parts[i])
+		end
+		return _joinpath(unpack(parts))
+	end
+
+	vim.fs.root = function(path, ...)
+		path = to_path(path)
+		local res = _root(path, ...)
+		-- nvim 0.12-dev peut retourner { root, marker }
+		if type(res) == "table" then
+			return to_path(res)
+		end
+		return res
+	end
+end
+
+vim.diagnostic.config({
+	virtual_text = {
+		source = false, -- on ne montre pas la source par défaut
+	},
+})
+
+-- 🔧 Filtre global : ignorer la source "typescript"
+do
+	local orig_handler = vim.diagnostic.handlers.virtual_text
+	vim.diagnostic.handlers.virtual_text = {
+		show = function(ns, bufnr, diagnostics, opts)
+			diagnostics = vim.tbl_filter(function(d)
+				return d.source ~= "typescript"
+			end, diagnostics)
+			orig_handler.show(ns, bufnr, diagnostics, opts)
+		end,
+		hide = orig_handler.hide,
+	}
+end
