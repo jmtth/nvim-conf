@@ -23,6 +23,7 @@ vim.keymap.set("n", "<leader>gv2", "<cmd>:DiffviewOpen HEAD~2<CR>", { desc = "Di
 vim.keymap.set("n", "<leader>gv3", "<cmd>:DiffviewOpen HEAD~3<CR>", { desc = "Diffview Head~3" })
 vim.keymap.set("n", "<leader>gh", "<cmd>:DiffviewFileHistory %<CR>", { desc = "DiffviewiHistory current file" })
 vim.keymap.set("n", "<leader>gc", "<cmd>:DiffviewClose<CR>", { desc = "Diffview Close" })
+vim.keymap.set("n", "<leader>gb", "<cmd>:GitBlameToggle<CR>", { desc = "GitBlameToggle" })
 -- vim.keymap.set("n", "gp", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", { noremap = true })
 -- Définition (header .hpp)
 vim.keymap.set(
